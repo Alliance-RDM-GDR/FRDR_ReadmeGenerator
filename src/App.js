@@ -1,428 +1,347 @@
-import React, { useState, useEffect } from 'react';
-import './App.css';
-import logo from './logo.png'; // Assuming you have a logo image named logo.png in the src folder
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import './i18n'; // Import the i18n configuration
+import React, { useState } from 'react';
+import './styles/App.css';
+import GeneralTemplate from './components/templates/GeneralTemplate';
+import LifeSciencesTemplate from './components/templates/LifeSciencesTemplate';
+import SequencingGenomicTemplate from './components/templates/SequencingGenomicTemplate';
+import logo from './logo.png';
 
-const disciplineOptions = ['General', 'Astronomy']; // Add more disciplines 
-const roles = ['Collector', 'Processor', 'Analyst']; // Example roles
+// Template options with descriptions
+const templates = [
+  {
+    name: 'General Template',
+    value: 'general',
+    description: 'The General Template is suitable for most datasets across disciplines. It includes sections like dataset identification, author information, licensing, methodological details, and file overview.',
+  },
+  {
+    name: 'Life Sciences Template',
+    value: 'life_sciences',
+    description: 'The Life Sciences Template is tailored for biological and life sciences research. Includes biological sample information, genetic data, and imaging data.',
+  },
+  {
+    name: 'Sequencing-Genomic Template',
+    value: 'sequencing_genomic',
+    description: 'The Sequencing-Genomic Template is specific to genomic studies and includes MiMARKS standards for sequencing (https://www.gensc.org/pages/standards-intro.html).',
+  },
+];
 
 function App() {
-    const [selectedDiscipline, setSelectedDiscipline] = useState('');
-    const [disciplineData, setDisciplineData] = useState({});
-    const [formData, setFormData] = useState({});
-    const [authorFields, setAuthorFields] = useState([{}]);
-    const [contributors, setContributors] = useState([{ role: '', name: '' }]);
-    const [softwareFields, setSoftwareFields] = useState({});
-    const [fileOverviews, setFileOverviews] = useState([{ type: '', description: '' }]);
-    const [startDate, setStartDate] = useState(null);
-    const [endDate, setEndDate] = useState(null);
+  const [selectedTemplate, setSelectedTemplate] = useState('general');
+  const [formData, setFormData] = useState({});
+  const [selectedTemplateDescription, setSelectedTemplateDescription] = useState(templates[0].description);
 
-    useEffect(() => {
-        if (selectedDiscipline) {
-            import(`./disciplines/${selectedDiscipline}.js`).then(module => {
-                setDisciplineData(module.default);
-            });
+  // Handle template selection change
+  const handleTemplateChange = (event) => {
+    const selectedValue = event.target.value;
+    setSelectedTemplate(selectedValue);
+    const selectedTemplate = templates.find((template) => template.value === selectedValue);
+    setSelectedTemplateDescription(selectedTemplate.description);
+  };
+
+  // Update form data based on user input in different sections
+  const updateFormData = (section, data) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [section]: data,
+    }));
+  };
+
+  // Generate Markdown README content based on collected data
+  const generateMarkdownReadmeContent = () => {
+    let readmeContent = '# README File\n\n';
+
+    Object.keys(formData).forEach((section) => {
+      readmeContent += `## ${section}\n\n`;
+
+      if (section === 'Licensing Options') {
+        readmeContent += `**Licence:** ${formData[section]?.selectedLicense || 'N/A'}\n\n`;
+        readmeContent += `**Licence Description:** ${formData[section]?.licenseDescription || 'N/A'}\n\n`;
+        readmeContent += `**Was data derived from another source?:** ${formData[section]?.derivedFromSource || 'N/A'}\n\n`;
+        readmeContent += `**Are the data sensitive or derived from autochthonous population?:** ${formData[section]?.sensitiveData || 'N/A'}\n\n`;
+      }
+      // Handle Methodological Details section
+      else if (section === 'Methodological Details') {
+        readmeContent += `**Methods for data collection:** ${formData[section]?.methodsForDataCollection || 'N/A'}\n\n`;
+
+        if (formData[section]?.collectionSoftwareFields?.length) {
+          readmeContent += `**Software used for data collection:**\n`;
+          formData[section].collectionSoftwareFields.forEach((field) => {
+            readmeContent += `- **Software**: ${field.software} (v${field.version}) - **Purpose**: ${field.purpose}\n`;
+          });
+        } else {
+          readmeContent += `**Software used for data collection:** N/A\n`;
         }
-    }, [selectedDiscipline]);
 
-    const handleStartDateChange = (date) => {
-        setStartDate(date);
-        setFormData({ ...formData, 'Start Date': date });
-    };
+        readmeContent += `\n**Methods for processing the data:** ${formData[section]?.methodsForDataProcessing || 'N/A'}\n\n`;
 
-    const handleEndDateChange = (date) => {
-        setEndDate(date);
-        setFormData({ ...formData, 'End Date': date });
-    };
+        if (formData[section]?.processingSoftwareFields?.length) {
+          readmeContent += `**Software used for data processing:**\n`;
+          formData[section].processingSoftwareFields.forEach((field) => {
+            readmeContent += `- **Software**: ${field.software} (v${field.version}) - **Purpose**: ${field.purpose}\n`;
+          });
+        } else {
+          readmeContent += `**Software used for data processing:** N/A\n`;
+        }
 
-    const handleInputChange = (index, field, value) => {
-        const newFields = [...authorFields];
-        newFields[index][field] = value;
-        setAuthorFields(newFields);
-        setFormData({ ...formData, [`Author ${index + 1} ${field}`]: value });
-    };
+        readmeContent += `\n**Environmental/experimental conditions:** ${formData[section]?.environmentalConditions || 'N/A'}\n\n`;
 
-    const handleContributorChange = (index, field, value) => {
-        const newContributors = [...contributors];
-        newContributors[index][field] = value;
-        setContributors(newContributors);
-        setFormData({ ...formData, [`Contributor ${index + 1} ${field}`]: value });
-    };
+        if (formData[section]?.contributors?.length) {
+          readmeContent += `**Contributors:**\n`;
+          formData[section].contributors.forEach((contributor) => {
+            readmeContent += `- **${contributor.role}**: ${contributor.name}\n`;
+          });
+        } else {
+          readmeContent += `**Contributors:** N/A\n`;
+        }
+      }
+      // Handle Author Information section
+      else if (section === 'Author Information') {
+        if (formData[section]?.length) {
+          formData[section].forEach((author, index) => {
+            readmeContent += `- **Author ${index + 1}:** ${author.name || 'N/A'}\n`;
+            readmeContent += `  **Institution:** ${author.institution || 'N/A'}\n`;
+            readmeContent += `  **Email:** ${author.email || 'N/A'}\n`;
+            readmeContent += `  **ORCID ID:** ${author.orcid || 'N/A'}\n`;
+          });
+        } else {
+          readmeContent += `**Author Information:** N/A\n`;
+        }
+      }
+      // Handle File Overview section
+      else if (section === 'File Overview') {
+        if (formData[section]?.fileOverviewFields?.length) {
+          readmeContent += `**Files Overview:**\n`;
+          formData[section].fileOverviewFields.forEach((field) => {
+            readmeContent += `- **Item Type**: ${field.itemType} - **Description**: ${field.description}\n`;
+          });
+        } else {
+          readmeContent += `**Files Overview:** N/A\n`;
+        }
+      
+        readmeContent += `\n**Relationship between files:** ${formData[section]?.relationshipBetweenFiles || 'N/A'}\n\n`;
+        readmeContent += `**Additional related data:** ${formData[section]?.additionalRelatedData || 'N/A'}\n\n`;
+      }
+      // Handle Life Science Details section
+      else if (section === 'Life Science Details') {
+        readmeContent += `### Biological Sample Information\n`;
+        readmeContent += `**Species:** ${formData[section]?.species || 'N/A'}\n\n`;
+        readmeContent += `**Sample Type:** ${formData[section]?.sampleType || 'N/A'}\n\n`;
+        readmeContent += `**Sample Preservation Method:** ${formData[section]?.samplePreservationMethod || 'N/A'}\n\n`;
+        readmeContent += `**Biological Relevance:** ${formData[section]?.biologicalRelevance || 'N/A'}\n\n`;
 
-    const addContributor = () => {
-        setContributors([...contributors, { role: '', name: '' }]);
-    };
+        readmeContent += `### Genetic Information\n`;
+        readmeContent += `**Genetic Modification Status:** ${formData[section]?.geneticModificationStatus || 'N/A'}\n\n`;
+        readmeContent += `**Genomic Data:** ${formData[section]?.genomicData || 'N/A'}\n\n`;
+        readmeContent += `**Transgenic Organism Information:** ${formData[section]?.transgenicOrganismInfo || 'N/A'}\n\n`;
 
-    const removeLastContributor = () => {
-        const newContributors = contributors.slice(0, -1);
-        setContributors(newContributors);
-    };
-
-    const handleSoftwareInputChange = (section, index, subfield, value) => {
-        const sectionFields = softwareFields[section] || [];
-        const newFields = [...sectionFields];
-        newFields[index] = { ...newFields[index], [subfield]: value };
-        setSoftwareFields({ ...softwareFields, [section]: newFields });
-        setFormData({ ...formData, [`${section} ${index + 1} ${subfield}`]: value });
-    };
-
-    const addSoftwareField = (section) => {
-        const sectionFields = softwareFields[section] || [];
-        setSoftwareFields({ ...softwareFields, [section]: [...sectionFields, {}] });
-    };
-
-    const removeLastSoftwareField = (section) => {
-        const sectionFields = softwareFields[section] || [];
-        setSoftwareFields({ ...softwareFields, [section]: sectionFields.slice(0, -1) });
-    };
-
-    const handleFileOverviewChange = (index, field, value) => {
-        const newOverviews = [...fileOverviews];
-        newOverviews[index][field] = value;
-        setFileOverviews(newOverviews);
-        setFormData({ ...formData, [`File Overview ${index + 1} ${field}`]: value });
-    };
-
-    const addFileOverview = () => {
-        setFileOverviews([...fileOverviews, { type: '', description: '' }]);
-    };
-
-    const removeLastFileOverview = () => {
-        const newOverviews = fileOverviews.slice(0, -1);
-        setFileOverviews(newOverviews);
-    };
-
-    const handleAdditionalRelatedDataChange = (field, value) => {
-        setFormData({ ...formData, [field]: value });
-    };
-
-    const licenceDescriptions = {
-        'CC BY': 'Lorem ipsum description for CC BY.',
-        'CC BY-SA': 'Lorem ipsum description for CC BY-SA.',
-        'CC BY-NC': 'Lorem ipsum description for CC BY-NC.',
-        'CC0': 'Lorem ipsum description for CC0.'
-    };
-
-    const sourceSensitivityOptions = ['Yes / Oui', 'No / Non'];
-
-    const exportAsTxt = () => {
-        let dataStr = "README\n\n";
-        Object.keys(disciplineData).forEach(section => {
-            dataStr += `${section}\n`;
-            disciplineData[section].forEach((field, index) => {
-                const key = Object.keys(formData).find(key => key.endsWith(field.name));
-                if (field.type === 'contributor') {
-                    dataStr += `${index + 1}. ${field.name}\n`;
-                    contributors.forEach((contributor, idx) => {
-                        dataStr += `    ${idx + 1}. Role: ${contributor.role}\n    Name: ${contributor.name}\n`;
-                    });
-                } else if (field.subfields) {
-                    dataStr += `${index + 1}. ${field.name}\n`;
-                    const sectionFields = softwareFields[`${section} ${field.name}`] || [];
-                    sectionFields.forEach((softwareField, idx) => {
-                        dataStr += `    ${idx + 1}. Software / Logiciel: ${softwareField['Software / Logiciel']}\n    Version: ${softwareField['Version']}\n    Purpose / Objectif: ${softwareField['Purpose / Objectif']}\n`;
-                    });
-                    if (key) {
-                        dataStr += `    ${formData[key]}\n`;
-                    }
-                } else if (field.type === 'fileOverview') {
-                    dataStr += `${index + 1}. ${field.name}\n`;
-                    fileOverviews.forEach((overview, idx) => {
-                        dataStr += `    ${idx + 1}. Type: ${overview.type}\n    Description: ${overview.description}\n`;
-                    });
-                } else if (field.type === 'additionalRelatedData') {
-                    dataStr += `${index + 1}. ${field.name}\n`;
-                    dataStr += `    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur lacinia nisl odio, eget hendrerit eros varius sit amet. Donec at convallis erat. Aenean nec diam nec metus commodo fermentum. Vivamus vel fringilla odio, non condimentum ligula.\n`;
-                    dataStr += `    ${formData[field.name] || ''}\n`;
-                } else {
-                    if (key) {
-                        dataStr += `${index + 1}. ${field.name}\n    ${formData[key]}\n`;
-                    }
-                }
-            });
-            dataStr += '\n';
+        readmeContent += `### Microscopy/Imaging Data\n`;
+        readmeContent += `**Microscopy Type:** ${formData[section]?.microscopyType || 'N/A'}\n\n`;
+        readmeContent += `**Imaging Parameters:** ${formData[section]?.imagingParameters || 'N/A'}\n\n`;
+        readmeContent += `**Staining/Labeling Method:** ${formData[section]?.stainingMethod || 'N/A'}\n\n`;
+      }
+      // Handle Genomic Standards section (Specific to MIMARKS-C)
+      else if (section === 'Genomic Standards') {
+        readmeContent += `**Sample Name:** ${formData[section]?.samp_name || 'N/A'}\n\n`;
+        readmeContent += `**PCR Primers:** ${formData[section]?.pcr_primers || 'N/A'}\n\n`;
+        readmeContent += `**Target Gene/Fragment:** ${formData[section]?.target_subfragment || 'N/A'}\n\n`;
+        readmeContent += `**Sequencing Method:** ${formData[section]?.seq_meth || 'N/A'}\n\n`;
+        readmeContent += `**Sequencing Platform Version:** ${formData[section]?.seq_platform_version || 'N/A'}\n\n`;
+        readmeContent += `**Read Count/Sequence Depth:** ${formData[section]?.read_count || 'N/A'}\n\n`;
+        readmeContent += `**PCR Conditions:** ${formData[section]?.pcr_cond || 'N/A'}\n\n`;
+        readmeContent += `**Nucleic Acid Amplification Method:** ${formData[section]?.nucl_acid_amp || 'N/A'}\n\n`;
+        readmeContent += `**Nucleic Acid Extraction Method:** ${formData[section]?.nucl_acid_ext || 'N/A'}\n\n`;
+        readmeContent += `**Chimera Checking Tool:** ${formData[section]?.chimera_check || 'N/A'}\n\n`;
+        readmeContent += `**Sequence Quality Check:** ${formData[section]?.seq_quality_check || 'N/A'}\n\n`;
+        readmeContent += `**Environmental Temperature (C):** ${formData[section]?.temp || 'N/A'}\n\n`;
+      }
+      // General sections
+      else {
+        Object.keys(formData[section]).forEach((field) => {
+          readmeContent += `${field}: ${formData[section][field]}\n\n`;
         });
-        const blob = new Blob([dataStr], { type: 'text/plain' });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.style.display = 'none';
-        a.href = url;
-        a.download = 'readme.txt';
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-    };
+      }
+    });
 
-    const exportAsJson = () => {
-        const jsonOutput = {};
-        Object.keys(disciplineData).forEach(section => {
-            jsonOutput[section] = {};
-            disciplineData[section].forEach((field, index) => {
-                if (field.type === 'contributor') {
-                    jsonOutput[section][`${index + 1}. ${field.name}`] = contributors.map((contributor, idx) => ({
-                        [`${idx + 1}. Role`]: contributor.role,
-                        [`Name`]: contributor.name
-                    }));
-                } else if (field.subfields) {
-                    const sectionFields = softwareFields[`${section} ${field.name}`] || [];
-                    jsonOutput[section][`${index + 1}. ${field.name}`] = sectionFields.map((softwareField, idx) => ({
-                        [`${idx + 1}. Software / Logiciel`]: softwareField['Software / Logiciel'],
-                        [`Version`]: softwareField['Version'],
-                        [`Purpose / Objectif`]: softwareField['Purpose / Objectif']
-                    }));
-                    const key = Object.keys(formData).find(key => key.endsWith(field.name));
-                    if (key) {
-                        jsonOutput[section][`${index + 1}. ${field.name}`].push({ 'Description': formData[key] });
-                    }
-                } else if (field.type === 'fileOverview') {
-                    jsonOutput[section][`${index + 1}. ${field.name}`] = fileOverviews.map((overview, idx) => ({
-                        [`${idx + 1}. Type`]: overview.type,
-                        [`Description`]: overview.description
-                    }));
-                } else if (field.type === 'additionalRelatedData') {
-                    jsonOutput[section][`${index + 1}. ${field.name}`] = {
-                        "Description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur lacinia nisl odio, eget hendrerit eros varius sit amet. Donec at convallis erat. Aenean nec diam nec metus commodo fermentum. Vivamus vel fringilla odio, non condimentum ligula.",
-                        "User Input": formData[field.name] || ''
-                    };
-                } else {
-                    const key = Object.keys(formData).find(key => key.endsWith(field.name));
-                    if (key) {
-                        jsonOutput[section][`${index + 1}. ${field.name}`] = formData[key];
-                    }
-                }
-            });
+    return readmeContent;
+  };
+
+  // Generate plain text README content based on collected data
+  const generatePlainTextReadmeContent = () => {
+    let readmeContent = 'README File\n\n';
+
+    Object.keys(formData).forEach((section) => {
+      readmeContent += `${section.toUpperCase()}\n\n`;
+
+      if (section === 'Licensing Options') {
+        readmeContent += `Licence: ${formData[section]?.selectedLicense || 'N/A'}\n`;
+        readmeContent += `Licence Description: ${formData[section]?.licenseDescription || 'N/A'}\n`;
+        readmeContent += `Was data derived from another source?: ${formData[section]?.derivedFromSource || 'N/A'}\n`;
+        readmeContent += `Are the data sensitive or derived from autochthonous population?: ${formData[section]?.sensitiveData || 'N/A'}\n\n`;
+      }
+      // Handle Methodological Details section
+      else if (section === 'Methodological Details') {
+        readmeContent += `Methods for data collection: ${formData[section]?.methodsForDataCollection || 'N/A'}\n\n`;
+
+        if (formData[section]?.collectionSoftwareFields?.length) {
+          readmeContent += `Software used for data collection:\n`;
+          formData[section].collectionSoftwareFields.forEach((field) => {
+            readmeContent += `- Software: ${field.software} (v${field.version}) - Purpose: ${field.purpose}\n`;
+          });
+        } else {
+          readmeContent += `Software used for data collection: N/A\n`;
+        }
+
+        readmeContent += `\nMethods for processing the data: ${formData[section]?.methodsForDataProcessing || 'N/A'}\n\n`;
+
+        if (formData[section]?.processingSoftwareFields?.length) {
+          readmeContent += `Software used for data processing:\n`;
+          formData[section].processingSoftwareFields.forEach((field) => {
+            readmeContent += `- Software: ${field.software} (v${field.version}) - Purpose: ${field.purpose}\n`;
+          });
+        } else {
+          readmeContent += `Software used for data processing: N/A\n`;
+        }
+
+        readmeContent += `\nEnvironmental/experimental conditions: ${formData[section]?.environmentalConditions || 'N/A'}\n\n`;
+
+        if (formData[section]?.contributors?.length) {
+          readmeContent += `Contributors:\n`;
+          formData[section].contributors.forEach((contributor) => {
+            readmeContent += `- ${contributor.role}: ${contributor.name}\n`;
+          });
+        } else {
+          readmeContent += `Contributors: N/A\n`;
+        }
+      }
+      // Handle Life Science Details section
+      else if (section === 'Life Science Details') {
+        readmeContent += `BIOLOGICAL SAMPLE INFORMATION\n`;
+        readmeContent += `Species: ${formData[section]?.species || 'N/A'}\n`;
+        readmeContent += `Sample Type: ${formData[section]?.sampleType || 'N/A'}\n`;
+        readmeContent += `Sample Preservation Method: ${formData[section]?.samplePreservationMethod || 'N/A'}\n`;
+        readmeContent += `Biological Relevance: ${formData[section]?.biologicalRelevance || 'N/A'}\n\n`;
+
+        readmeContent += `GENETIC INFORMATION\n`;
+        readmeContent += `Genetic Modification Status: ${formData[section]?.geneticModificationStatus || 'N/A'}\n`;
+        readmeContent += `Genomic Data: ${formData[section]?.genomicData || 'N/A'}\n`;
+        readmeContent += `Transgenic Organism Information: ${formData[section]?.transgenicOrganismInfo || 'N/A'}\n\n`;
+
+        readmeContent += `MICROSCOPY/IMAGING DATA\n`;
+        readmeContent += `Microscopy Type: ${formData[section]?.microscopyType || 'N/A'}\n`;
+        readmeContent += `Imaging Parameters: ${formData[section]?.imagingParameters || 'N/A'}\n`;
+        readmeContent += `Staining/Labeling Method: ${formData[section]?.stainingMethod || 'N/A'}\n\n`;
+      }
+      // Handle Genomic Standards section (Specific to MIMARKS)
+      else if (section === 'Genomic Standards') {
+        readmeContent += `Sequencing Method: ${formData[section]?.sequencingMethod || 'N/A'}\n`;
+        readmeContent += `Target Gene: ${formData[section]?.targetGene || 'N/A'}\n`;
+        readmeContent += `Amplification Primers: ${formData[section]?.amplificationPrimers || 'N/A'}\n`;
+        readmeContent += `Sequencing Platform: ${formData[section]?.sequencingPlatform || 'N/A'}\n`;
+        readmeContent += `Read Length: ${formData[section]?.readLength || 'N/A'}\n\n`;
+      }
+      // General sections
+      else {
+        Object.keys(formData[section]).forEach((field) => {
+          readmeContent += `${field}: ${formData[section][field]}\n\n`;
         });
-        const dataStr = JSON.stringify(jsonOutput, null, 2);
-        const blob = new Blob([dataStr], { type: 'application/json' });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.style.display = 'none';
-        a.href = url;
-        a.download = 'readme.json';
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-    };
+      }
+    });
 
-    const handleLicenceChange = (value) => {
-        setFormData({ ...formData, 'Licence': value, 'Licence Description': licenceDescriptions[value] });
-    };
+    return readmeContent;
+  };
 
-    const handleSourceSensitivityChange = (field, value) => {
-        setFormData({ ...formData, [field]: value });
-    };
+  // Export Markdown file
+  const exportMarkdownReadme = () => {
+    const readmeContent = generateMarkdownReadmeContent();
+    const blob = new Blob([readmeContent], { type: 'text/markdown' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.style.display = 'none';
+    a.href = url;
+    a.download = 'README.md';
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+  };
 
-    return (
-        <div className="App">
-            <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo" />
-                <h1>Readme File Generator</h1>
-            </header>
-            <div className="App-body">
-                <div className="App-left">
-                    <label>Select a discipline:</label>
-                    <select onChange={(e) => setSelectedDiscipline(e.target.value)} value={selectedDiscipline}>
-                        <option value="">--Choose a discipline--</option>
-                        {disciplineOptions.map((discipline, index) => (
-                            <option key={index} value={discipline}>{discipline}</option>
-                        ))}
-                    </select>
-                </div>
-                <div className="App-sections">
-                    {selectedDiscipline && Object.keys(disciplineData).map((section, index) => (
-                        <div key={index} className="App-section">
-                            <h2>{section}</h2>
-                            {disciplineData[section].map((field, idx) => (
-                                <div key={idx} className="App-field">
-                                    <label>{field.name}:</label>
-                                    {field.name === 'Date of data collection / Date de la collecte des données:' ? (
-                                        <div className="date-picker-group">
-                                            <div className="date-picker-column">
-                                                <label>Start Date:</label>
-                                                <DatePicker
-                                                    selected={startDate}
-                                                    onChange={handleStartDateChange}
-                                                    dateFormat="MM/yyyy"
-                                                    showMonthYearPicker
-                                                    showFullMonthYearPicker
-                                                />
-                                            </div>
-                                            <div className="date-picker-column">
-                                                <label>End Date:</label>
-                                                <DatePicker
-                                                    selected={endDate}
-                                                    onChange={handleEndDateChange}
-                                                    dateFormat="MM/yyyy"
-                                                    showMonthYearPicker
-                                                    showFullMonthYearPicker
-                                                />
-                                            </div>
-                                        </div>
-                                    ) : field.type === 'small' ? (
-                                        <input
-                                            type="text"
-                                            onChange={(e) => handleInputChange(0, field.name, e.target.value)}
-                                        />
-                                    ) : field.type === 'large' && field.subfields ? (
-                                        <>
-                                            <textarea
-                                                onChange={(e) => handleInputChange(0, field.name, e.target.value)}
-                                            />
-                                            {(softwareFields[`${section} ${field.name}`] || []).map((softwareField, sIdx) => (
-                                                <div key={sIdx} className="App-subfield-group">
-                                                    {field.subfields.map(subfield => (
-                                                        <div key={subfield} className="App-subfield">
-                                                            <label>{subfield}:</label>
-                                                            <input
-                                                                type="text"
-                                                                onChange={(e) => handleSoftwareInputChange(`${section} ${field.name}`, sIdx, subfield, e.target.value)}
-                                                            />
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            ))}
-                                            <button className="App-button" onClick={() => addSoftwareField(`${section} ${field.name}`)}>Add Software</button>
-                                            <button className="App-button" onClick={() => removeLastSoftwareField(`${section} ${field.name}`)}>Remove Last Software</button>
-                                        </>
-                                    ) : field.type === 'large' ? (
-                                        <textarea
-                                            onChange={(e) => handleInputChange(0, field.name, e.target.value)}
-                                        />
-                                    ) : field.type === 'contributor' ? (
-                                        <>
-                                            {contributors.map((contributor, cIdx) => (
-                                                <div key={cIdx} className="App-contributor-group">
-                                                    <div className="App-contributor-column">
-                                                        <label>Role:</label>
-                                                        <select
-                                                            className="App-contributor-role"
-                                                            onChange={(e) => handleContributorChange(cIdx, 'role', e.target.value)}
-                                                        >
-                                                            <option value="">--Select Role--</option>
-                                                            {roles.map((role, rIdx) => (
-                                                                <option key={rIdx} value={role}>{role}</option>
-                                                            ))}
-                                                        </select>
-                                                    </div>
-                                                    <div className="App-contributor-column">
-                                                        <label>Name (Last name, Name):</label>
-                                                        <input
-                                                            className="App-contributor-name"
-                                                            type="text"
-                                                            onChange={(e) => handleContributorChange(cIdx, 'name', e.target.value)}
-                                                        />
-                                                    </div>
-                                                </div>
-                                            ))}
-                                            <button className="App-button" onClick={addContributor}>Add another</button>
-                                            <button className="App-button" onClick={removeLastContributor}>Erase last</button>
-                                        </>
-                                    ) : field.type === 'fileOverview' ? (
-                                        <>
-                                            {fileOverviews.map((overview, fIdx) => (
-                                                <div key={fIdx} className="App-fileOverview-group">
-                                                    <div className="App-fileOverview-column">
-                                                        <label>Item Type / Type d'élément:</label>
-                                                        <select
-                                                            className="App-fileOverview-type"
-                                                            onChange={(e) => handleFileOverviewChange(fIdx, 'type', e.target.value)}
-                                                            style={{ width: '150px' }} // Adjust width here
-                                                        >
-                                                            <option value="">--Select Type--</option>
-                                                            <option value="File">File / Fichier</option>
-                                                            <option value="Folder">Folder / Dossier</option>
-                                                        </select>
-                                                    </div>
-                                                    <div className="App-fileOverview-column">
-                                                        <label>Description:</label>
-                                                        <p>Please provide a brief description of the item.</p> {/* Instructions added here */}
-                                                        <textarea
-                                                            className="App-fileOverview-description"
-                                                            onChange={(e) => handleFileOverviewChange(fIdx, 'description', e.target.value)}
-                                                        />
-                                                    </div>
-                                                </div>
-                                            ))}
-                                            <button className="App-button" onClick={addFileOverview}>Add another</button>
-                                            <button className="App-button" onClick={removeLastFileOverview}>Erase last</button>
-                                        </>
-                                    ) : field.type === 'additionalRelatedData' ? (
-                                        <>
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur lacinia nisl odio, eget hendrerit eros varius sit amet. Donec at convallis erat. Aenean nec diam nec metus commodo fermentum. Vivamus vel fringilla odio, non condimentum ligula.</p>
-                                            <input
-                                                type="text"
-                                                onChange={(e) => handleAdditionalRelatedDataChange(field.name, e.target.value)}
-                                            />
-                                        </>
-                                    ) : field.type === 'licence' ? (
-                                        <>
-                                            <div className="App-licence-group">
-                                                <div className="App-licence-column">
-                                                    <label>Licence:</label>
-                                                    <select
-                                                        className="App-licence-select"
-                                                        onChange={(e) => handleLicenceChange(e.target.value)}
-                                                    >
-                                                        <option value="">--Select Licence--</option>
-                                                        {Object.keys(licenceDescriptions).map((licence, lIdx) => (
-                                                            <option key={lIdx} value={licence}>{licence}</option>
-                                                        ))}
-                                                    </select>
-                                                </div>
-                                                <div className="App-licence-column">
-                                                    <label>Description:</label>
-                                                    <p>{formData['Licence Description'] || 'Please select a licence to see its description.'}</p>
-                                                </div>
-                                            </div>
-                                        </>
-                                    ) : field.type === 'sourceSensitivity' ? (
-                                        <>
-                                            <div className="App-sourceSensitivity-group">
-                                                <div className="App-sourceSensitivity-column">
-                                                    <label className="no-bold-label">Was data derived from another source? / Les données proviennent-elles d'une autre source ?:</label>
-                                                    <select
-                                                        className="App-sourceSensitivity-select"
-                                                        onChange={(e) => handleSourceSensitivityChange('Source Derived', e.target.value)}
-                                                    >
-                                                        <option value="">--Select--</option>
-                                                        {sourceSensitivityOptions.map((option, sIdx) => (
-                                                            <option key={sIdx} value={option}>{option}</option>
-                                                        ))}
-                                                    </select>
-                                                </div>
-                                                <div className="App-sourceSensitivity-column">
-                                                    <label className="no-bold-label">The data are sensitive or derived from autochthonous population / Les données sont sensibles ou proviennent de la population autochtones:</label>
-                                                    <select
-                                                        className="App-sourceSensitivity-select"
-                                                        onChange={(e) => handleSourceSensitivityChange('Sensitive Data', e.target.value)}
-                                                    >
-                                                        <option value="">--Select--</option>
-                                                        {sourceSensitivityOptions.map((option, sIdx) => (
-                                                            <option key={sIdx} value={option}>{option}</option>
-                                                        ))}
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </>
-                                    ) : field.type === 'recommendedCitation' ? (
-                                        <textarea
-                                            onChange={(e) => handleAdditionalRelatedDataChange(field.name, e.target.value)}
-                                        />
-                                    ) : null}
-                                </div>
-                            ))}
-                        </div>
-                    ))}
-                </div>
-            </div>
-            <div className="App-buttons">
-                <button className="App-button" onClick={exportAsTxt}>Export as .txt</button>
-                <button className="App-button" onClick={exportAsJson}>Export as .json</button>
-            </div>
+  // Export Plain Text file
+  const exportPlainTextReadme = () => {
+    const readmeContent = generatePlainTextReadmeContent();
+    const blob = new Blob([readmeContent], { type: 'text/plain' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.style.display = 'none';
+    a.href = url;
+    a.download = 'README.txt';
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+  };
+
+  return (
+    <div className="app-container">
+      <div className="left-column">
+        <img src={logo} alt="Company Logo" className="logo" />
+
+        {/* Form description and useful links */}
+        <div className="form-description">
+          <p>
+            This README file generator was generated by the Digital Research Alliance of Canada (https://alliancecan.ca/en). This tool allows 
+            researchers and data depositors to identify and fill in relevant information to describe and contextualize datasets.
+            Exported as markdown (.md) or plain text (.txt), the README file is suitable to document data for FRDR or other repositories. 
+          </p>
+          <p>
+            <a href="https://www.frdr-dfdr.ca/repo/" target="_blank" rel="noopener noreferrer">FRDR repository</a> | 
+            <a href="https://dmp-pgd.ca/" target="_blank" rel="noopener noreferrer">DMP assistant</a>
+          </p>
+          <p>
+            Please be aware that you cannot save the work. Fill in the formulary and export as markdown or plain text. 
+          </p>
         </div>
-    );
+
+        {/* Template selector */}
+        <div className="template-selector">
+          <label>Select Template:</label>
+          <select value={selectedTemplate} onChange={handleTemplateChange}>
+            {templates.map((template) => (
+              <option key={template.value} value={template.value}>
+                {template.name}
+              </option>
+            ))}
+          </select>
+
+          {/* Display the description of the selected template */}
+          <div className="template-description">
+            <p>{selectedTemplateDescription}</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="right-column">
+        <h1 className="app-title">Readme File Generator</h1>
+        <div className="section-content">
+          {selectedTemplate === 'general' && (
+            <GeneralTemplate updateFormData={updateFormData} />
+          )}
+          {selectedTemplate === 'life_sciences' && (
+            <LifeSciencesTemplate updateFormData={updateFormData} />
+          )}
+          {selectedTemplate === 'sequencing_genomic' && (
+            <SequencingGenomicTemplate updateFormData={updateFormData} />
+          )}
+        </div>
+
+        {/* Two buttons for Markdown and Plain Text export, side by side */}
+        <div className="button-group">
+          <button onClick={exportMarkdownReadme} className="export-button">
+            Export as Markdown
+          </button>
+          <button onClick={exportPlainTextReadme} className="export-button">
+            Export as Plain Text
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default App;

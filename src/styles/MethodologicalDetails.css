@@ -1,0 +1,97 @@
+.methodological-details {
+    margin-top: 20px;
+    text-align: left;
+  }
+  
+  .methodological-details h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .methodological-details hr {
+    border: 1px solid gray;
+    margin-bottom: 20px;
+  }
+  
+  .field {
+    margin-bottom: 20px;
+  }
+  
+  .field label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+  }
+  
+  .field textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  .button-group {
+    margin-top: 10px;
+  }
+  
+  .button-group button {
+    margin-right: 10px;
+    padding: 10px 20px;
+    background-color: #D6AB00;
+    border: none;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .button-group button:hover {
+    background-color: #D6AB00;
+  }
+  
+  .software-fields {
+    margin-top: 10px;
+  }
+  
+  .software-field {
+    margin-bottom: 10px;
+  }
+  
+  .software-field label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .software-field input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  .contributors {
+    margin-top: 30px;
+  }
+  
+  .contributors .row {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .contributors .column {
+    width: 48%;
+  }
+  
+  .contributors .column select,
+  .contributors .column input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  

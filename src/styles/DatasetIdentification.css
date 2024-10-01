@@ -1,0 +1,61 @@
+.dataset-identification-container {
+    padding: 20px;
+    background-color: #fff;
+    width: 100%; /* Ensures it takes up 100% width */
+    box-sizing: border-box; /* Prevents padding from affecting the width */
+    text-align: left; /* Align content to the left */
+}
+
+.dataset-identification-container h2 {
+    font-size: 24px;  /* Same size as Author Information */
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.dataset-identification-container hr {
+    border: 1px solid gray;  /* Same gray line as Author Information */
+    margin-bottom: 20px;
+}
+
+.field-group {
+    margin-bottom: 20px;
+}
+
+.field-group label {
+    font-size: 16px;  /* Same font size as Author Information labels */
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.text-input, .textarea-input {
+    width: 100%;  /* Ensures the input fields take 100% of the available space */
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.textarea-input {
+    height: 100px;  /* Bigger text area for the description */
+    resize: vertical;
+}
+
+/* Date Picker Section */
+.date-group {
+    display: flex;
+    justify-content: space-between;
+}
+
+.date-column {
+    width: 48%; /* Each date picker will take 48% of the width to fit within the available space */
+}
+
+.date-picker {
+    width: 100%;
+    padding: 8px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}

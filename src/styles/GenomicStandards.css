@@ -1,0 +1,61 @@
+.genomic-standards {
+    margin: 20px 0;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .genomic-standards h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .genomic-standards .field {
+    margin-bottom: 15px;
+  }
+  
+  .genomic-standards label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+  }
+  
+  .genomic-standards input[type="text"],
+  .genomic-standards textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    color: #333;
+  }
+  
+  .genomic-standards textarea {
+    resize: vertical;
+    height: 80px;
+  }
+  
+  .genomic-standards .button-group {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 20px;
+  }
+  
+  .genomic-standards button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+  
+  .genomic-standards button:hover {
+    background-color: #45a049;
+  }
+  

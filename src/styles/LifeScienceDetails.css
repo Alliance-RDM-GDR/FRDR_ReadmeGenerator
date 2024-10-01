@@ -1,0 +1,88 @@
+.life-science-details {
+    margin-bottom: 20px;
+  }
+  
+  .life-science-details h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .life-science-details hr {
+    margin-bottom: 20px;
+    border: 0;
+    border-top: 1px solid #e0e0e0;
+  }
+  
+  .section-subtitle {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #444;
+  }
+  
+  .field {
+    margin-bottom: 15px;
+  }
+  
+  .field label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 5px;
+    color: #555;
+  }
+  
+  .field input[type="text"],
+  .field input[type="number"],
+  .field textarea,
+  .field select {
+    width: 100%;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  .field textarea {
+    resize: vertical;
+  }
+  
+  .field input[type="text"]:focus,
+  .field input[type="number"]:focus,
+  .field textarea:focus,
+  .field select:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+  
+  .field input[type="text"]::placeholder,
+  .field input[type="number"]::placeholder,
+  .field textarea::placeholder {
+    color: #aaa;
+  }
+  
+  .field select {
+    background-color: #fff;
+  }
+  
+  .field select option {
+    padding: 5px;
+  }
+  
+  @media (max-width: 768px) {
+    .field {
+      margin-bottom: 10px;
+    }
+    
+    .life-science-details h2 {
+      font-size: 20px;
+    }
+  
+    .section-subtitle {
+      font-size: 16px;
+    }
+  }
+  

@@ -1,0 +1,36 @@
+.author-information {
+    padding: 20px;
+    background-color: #fff;
+  }
+  
+  .author-information h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .author-information hr {
+    border: 1px solid gray;
+    margin-bottom: 20px;
+  }
+  
+  .author-information .field {
+    margin-bottom: 20px;
+  }
+  
+  .author-information .field label {
+    font-size: 16px;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .author-information .field input[type="text"],
+  .author-information .field input[type="email"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  

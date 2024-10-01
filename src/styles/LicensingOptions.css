@@ -1,0 +1,49 @@
+.licensing-options {
+    margin-top: 20px;
+    text-align: left;
+  }
+  
+  .licensing-options h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .licensing-options hr {
+    border: 1px solid gray;
+    margin-bottom: 20px;
+  }
+  
+  .licensing-options .row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .licensing-options .column {
+    width: 48%;  /* Each column takes approximately half of the row's width */
+  }
+  
+  .licensing-options .column label {
+    font-size: 16px;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .licensing-options .column select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  .licensing-options .column p {
+    margin-top: 5px;
+    padding: 8px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
