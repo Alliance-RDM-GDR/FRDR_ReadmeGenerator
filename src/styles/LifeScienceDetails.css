@@ -1,35 +1,47 @@
 .life-science-details {
     margin-bottom: 20px;
+    padding: 20px;
+    max-width: 900px; 
+    width: 100%;
   }
   
   .life-science-details h2 {
     font-size: 24px;
     font-weight: bold;
+    margin-top: 30px;
+    margin-bottom: 10px;
+    color: #333;
+  }
+
+  .life-science-details h3 {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 40px;
     margin-bottom: 10px;
     color: #333;
   }
   
   .life-science-details hr {
+    border: 1px solid gray;
     margin-bottom: 20px;
-    border: 0;
-    border-top: 1px solid #e0e0e0;
   }
   
   .section-subtitle {
+    margin-top: 10px;
     font-size: 18px;
     font-weight: bold;
-    margin-bottom: 10px;
     color: #444;
   }
   
   .field {
-    margin-bottom: 15px;
+    margin-bottom: 5px;
   }
   
   .field label {
     display: block;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 500;
+    margin-top: 20px !important;
     margin-bottom: 5px;
     color: #555;
   }
@@ -39,8 +51,8 @@
   .field textarea,
   .field select {
     width: 100%;
-    padding: 8px;
-    font-size: 14px;
+    padding: 5px;
+    font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
@@ -78,7 +90,7 @@
     }
     
     .life-science-details h2 {
-      font-size: 20px;
+      font-size: 10px;
     }
   
     .section-subtitle {

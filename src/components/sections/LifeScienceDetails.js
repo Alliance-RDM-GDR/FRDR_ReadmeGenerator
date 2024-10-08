@@ -1,6 +1,6 @@
 // components/sections/LifeScienceDetails.js
 import React, { useState, useEffect } from 'react';
-import '../../styles/LifeScienceDetails.css'; // Ensure you have a corresponding CSS file for styling
+import '../../styles/LifeScienceDetails.css'; 
 
 function LifeScienceDetails({ updateData }) {
   const [fields, setFields] = useState({
@@ -38,9 +38,9 @@ function LifeScienceDetails({ updateData }) {
       <hr />
       
       {/* Biological Sample Information */}
-      <h3>Biological Sample Information</h3>
+      <h3>Biological sample information</h3>
       <div className="field">
-        <label>Species:</label>
+        <label>Species</label>
         <input
           type="text"
           value={fields.species}
@@ -48,7 +48,7 @@ function LifeScienceDetails({ updateData }) {
         />
       </div>
       <div className="field">
-        <label>Sample Type:</label>
+        <label>Sample type</label>
         <input
           type="text"
           value={fields.sampleType}
@@ -56,7 +56,7 @@ function LifeScienceDetails({ updateData }) {
         />
       </div>
       <div className="field">
-        <label>Sample Preservation Method:</label>
+        <label>Sample preservation method</label>
         <input
           type="text"
           value={fields.samplePreservationMethod}
@@ -64,7 +64,7 @@ function LifeScienceDetails({ updateData }) {
         />
       </div>
       <div className="field">
-        <label>Biological Relevance:</label>
+        <label>Biological relevance</label>
         <input
           type="text"
           value={fields.biologicalRelevance}
@@ -75,7 +75,7 @@ function LifeScienceDetails({ updateData }) {
       {/* Genetic Information */}
       <h3>Genetic Information</h3>
       <div className="field">
-        <label>Genetic Modification Status:</label>
+        <label>Genetic modification status</label>
         <input
           type="text"
           value={fields.geneticModificationStatus}
@@ -83,7 +83,7 @@ function LifeScienceDetails({ updateData }) {
         />
       </div>
       <div className="field">
-        <label>Genomic Data:</label>
+        <label>Genomic data</label>
         <input
           type="text"
           value={fields.genomicData}
@@ -91,7 +91,7 @@ function LifeScienceDetails({ updateData }) {
         />
       </div>
       <div className="field">
-        <label>Transgenic Organism Information:</label>
+        <label>Transgenic organism information</label>
         <input
           type="text"
           value={fields.transgenicOrganismInfo}
@@ -100,9 +100,9 @@ function LifeScienceDetails({ updateData }) {
       </div>
 
       {/* Microscopy/Imaging Data */}
-      <h3>Microscopy/Imaging Data</h3>
+      <h3>Microscopy/imaging data</h3>
       <div className="field">
-        <label>Microscopy Type:</label>
+        <label>Microscopy type</label>
         <input
           type="text"
           value={fields.microscopyType}
@@ -110,7 +110,7 @@ function LifeScienceDetails({ updateData }) {
         />
       </div>
       <div className="field">
-        <label>Imaging Parameters:</label>
+        <label>Imaging parameters</label>
         <input
           type="text"
           value={fields.imagingParameters}
@@ -118,7 +118,7 @@ function LifeScienceDetails({ updateData }) {
         />
       </div>
       <div className="field">
-        <label>Staining/Labeling Method:</label>
+        <label>Staining/labeling method</label>
         <input
           type="text"
           value={fields.stainingMethod}

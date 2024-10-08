@@ -6,7 +6,7 @@ function AuthorInformation({ updateData }) {
 
   // Update the parent component whenever the authors change
   useEffect(() => {
-    updateData(authors);
+    updateData({ authors });
   }, [authors, updateData]);
 
   // Add a new author
@@ -37,7 +37,7 @@ function AuthorInformation({ updateData }) {
       {authors.map((author, index) => (
         <div key={index} className="author-field">
           <div className="field">
-            <label>Name (Last name, First name):</label>
+            <label>Name (Given name and family name):</label>
             <input
               type="text"
               className="text-input"

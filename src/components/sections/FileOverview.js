@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import '../../styles/FileOverview.css';
 
 function FileOverview({ updateData }) {
-  const [fileOverviewFields, setFileOverviewFields] = useState([{ itemType: '', description: '' }]);
+  const [fileOverviewFields, setFileOverviewFields] = useState([{ itemType: '', name: '', description: '' }]);
   const [relationshipBetweenFiles, setRelationshipBetweenFiles] = useState('');
   const [additionalRelatedData, setAdditionalRelatedData] = useState('');
 
   // Update form data when fields change
   useEffect(() => {
     updateData({
-      fileOverviewFields, // Correctly name this field for consistency with App.js
+      fileOverviewFields,
       relationshipBetweenFiles,
       additionalRelatedData
     });
@@ -17,7 +17,7 @@ function FileOverview({ updateData }) {
 
   // Add new file overview field
   const addFileOverviewField = () => {
-    setFileOverviewFields([...fileOverviewFields, { itemType: '', description: '' }]);
+    setFileOverviewFields([...fileOverviewFields, { itemType: '', name: '', description: '' }]);
   };
 
   // Remove the last added field
@@ -42,7 +42,7 @@ function FileOverview({ updateData }) {
         <div key={index} className="file-overview-field">
           <div className="field-row">
             <div className="field-column">
-              <label>Item Type:</label>
+              <label>Item Type</label>
               <select
                 value={field.itemType}
                 onChange={(e) => handleInputChange(index, 'itemType', e.target.value)}
@@ -51,6 +51,15 @@ function FileOverview({ updateData }) {
                 <option value="File">File</option>
                 <option value="Folder">Folder</option>
               </select>
+            </div>
+            <div className="field-column">
+              <label>Name:</label>
+              <input
+                type="text"
+                value={field.name}
+                onChange={(e) => handleInputChange(index, 'name', e.target.value)}
+                placeholder="Enter item name"
+              />
             </div>
             <div className="field-column">
               <label>Description:</label>
@@ -70,7 +79,7 @@ function FileOverview({ updateData }) {
       </div>
 
       <div className="field">
-        <label>Relationship between files:</label>
+        <label>Relationship between files</label>
         <textarea
           rows="4"
           value={relationshipBetweenFiles}
@@ -79,7 +88,7 @@ function FileOverview({ updateData }) {
       </div>
 
       <div className="field">
-        <label>Additional related data:</label>
+        <label>Additional related data</label>
         <textarea
           rows="4"
           value={additionalRelatedData}

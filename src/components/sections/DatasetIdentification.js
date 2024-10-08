@@ -43,7 +43,7 @@ function DatasetIdentification({ updateData }) {
       </div>
       <div className="date-group">
         <div className="date-column">
-          <label>Start Date:</label>
+          <label>Data collection start date:</label>
           <input
             type="date"
             className="date-picker"
@@ -52,7 +52,7 @@ function DatasetIdentification({ updateData }) {
           />
         </div>
         <div className="date-column">
-          <label>End Date:</label>
+          <label>Data collection end date:</label>
           <input
             type="date"
             className="date-picker"

@@ -105,7 +105,7 @@ function MethodologicalDetails({ updateData }) {
           collectionSoftwareFields.map((field, index) => (
             <div key={index} className="software-fields">
               <div className="software-field">
-                <label>Software:</label>
+                <label>Software/instrument:</label>
                 <input
                   type="text"
                   value={field.software}
@@ -132,14 +132,14 @@ function MethodologicalDetails({ updateData }) {
           ))}
 
         <div className="button-group">
-          <button onClick={addCollectionSoftwareField}>Add Software</button>
-          <button onClick={removeLastCollectionSoftwareField}>Remove Last Software</button>
+          <button onClick={addCollectionSoftwareField}>Add Software/instrument</button>
+          <button onClick={removeLastCollectionSoftwareField}>Remove last</button>
         </div>
       </div>
 
       {/* Methods for processing the data */}
       <div className="field">
-        <label>Methods for processing the data:</label>
+        <label>Methods for processing the data</label>
         <textarea
           rows="4"
           value={methodsForDataProcessing}
@@ -179,7 +179,7 @@ function MethodologicalDetails({ updateData }) {
 
         <div className="button-group">
           <button onClick={addProcessingSoftwareField}>Add Software</button>
-          <button onClick={removeLastProcessingSoftwareField}>Remove Last Software</button>
+          <button onClick={removeLastProcessingSoftwareField}>Remove last</button>
         </div>
       </div>
 
@@ -199,7 +199,7 @@ function MethodologicalDetails({ updateData }) {
         {contributors.map((contributor, index) => (
           <div key={index} className="row">
             <div className="column">
-              <label>Role:</label>
+              <label>Role</label>
               <select
                 value={contributor.role}
                 onChange={(e) => handleContributorChange(index, 'role', e.target.value)}
@@ -211,7 +211,7 @@ function MethodologicalDetails({ updateData }) {
               </select>
             </div>
             <div className="column">
-              <label>Name (Last name, Name):</label>
+              <label>Name (Given name and family name):</label>
               <input
                 type="text"
                 value={contributor.name}

@@ -1,34 +1,44 @@
 import React, { useState, useEffect } from 'react';
-import '../../styles/LicensingOptions.css'; // Ensure the path is correct
+import '../../styles/LicensingOptions.css';
 
 function LicensingOptions({ updateData }) {
   const [selectedLicense, setSelectedLicense] = useState('');
   const [licenseDescription, setLicenseDescription] = useState('');
+  const [customLicenseDescription, setCustomLicenseDescription] = useState('');
   const [derivedFromSource, setDerivedFromSource] = useState('');
   const [sensitiveData, setSensitiveData] = useState('');
 
   const licenses = [
-    { value: 'cc_by', label: 'CC BY', description: 'This license allows others to distribute, remix, adapt, and build upon your work, even commercially, as long as they credit you for the original creation.' },
-    { value: 'cc_by_sa', label: 'CC BY-SA', description: 'This license lets others remix, adapt, and build upon your work even for commercial purposes, as long as they credit you and license their new creations under identical terms.' },
-    { value: 'cc_by_nc', label: 'CC BY-NC', description: 'This license lets others remix, adapt, and build upon your work non-commercially, and although their new works must also acknowledge you and be non-commercial, they don’t have to license their derivative works on the same terms.' },
-    { value: 'cc0', label: 'CC0', description: 'This license allows the work to be freely available in the public domain.' },
+    { value: 'cc0', label: 'CC0 1.0', description: 'This license allows the work to be freely available in the public domain (https://creativecommons.org/publicdomain/zero/1.0/)' },
+    { value: 'cc_by', label: 'CC BY 4.0', description: 'This license allows others to distribute, remix, adapt, and build upon your work, even commercially, as long as they credit you for the original creation (https://creativecommons.org/licenses/by/4.0/).' },
+    { value: 'cc_by_sa', label: 'CC BY-SA 4.0', description: 'This license lets others remix, adapt, and build upon your work even for commercial purposes, as long as they credit you and license their new creations under identical terms (https://creativecommons.org/licenses/by-sa/4.0/).' },
+    { value: 'cc_by_nc', label: 'CC BY-NC 4.0', description: 'This license lets others remix, adapt, and build upon your work non-commercially, and although their new works must also acknowledge you and be non-commercial, they don’t have to license their derivative works on the same terms (https://creativecommons.org/licenses/by-nc/4.0/).' },
+    { value: 'cc_by_nd', label: 'CC BY-ND 4.0', description: 'This license allows redistribution, commercial and non-commercial, as long as it is passed along unchanged and in whole, with credit to you (https://creativecommons.org/licenses/by-nd/4.0/).' },
+    { value: 'cc_by_nc_sa', label: 'CC BY-NC-SA 4.0', description: 'This license lets others remix, adapt, and build upon your work non-commercially, as long as they credit you and license their new creations under the identical terms (https://creativecommons.org/licenses/by-nc-sa/4.0/).' },
+    { value: 'cc_by_nc_nd', label: 'CC BY-NC-ND 4.0', description: 'It allows others to download your work and share it with others as long as they credit you, but they can’t change it in any way or use it commercially (https://creativecommons.org/licenses/by-nc-nd/4.0/).' },
+    { value: 'other', label: 'Other', description: '' }, // For custom user input
   ];
 
   const handleLicenseChange = (event) => {
     const selected = licenses.find(license => license.value === event.target.value);
     setSelectedLicense(event.target.value);
     setLicenseDescription(selected ? selected.description : '');
+
+    // Clear custom license description when "Other" is not selected
+    if (event.target.value !== 'other') {
+      setCustomLicenseDescription('');
+    }
   };
 
   // Update the parent component whenever data changes
   useEffect(() => {
     updateData({
-      selectedLicense,
-      licenseDescription,
+      selectedLicense: selectedLicense === 'other' ? customLicenseDescription : licenses.find(license => license.value === selectedLicense)?.label,
+      licenseDescription: selectedLicense === 'other' ? customLicenseDescription : licenseDescription,
       derivedFromSource,
       sensitiveData,
     });
-  }, [selectedLicense, licenseDescription, derivedFromSource, sensitiveData, updateData]);
+  }, [selectedLicense, licenseDescription, customLicenseDescription, derivedFromSource, sensitiveData, updateData]);
 
   return (
     <div className="licensing-options">
@@ -48,7 +58,15 @@ function LicensingOptions({ updateData }) {
         </div>
         <div className="column">
           <label>Licence Description:</label>
-          <p>{licenseDescription || 'Please select a licence to see its description.'}</p>
+          {selectedLicense === 'other' ? (
+            <textarea
+              value={customLicenseDescription}
+              onChange={(e) => setCustomLicenseDescription(e.target.value)}
+              placeholder="Describe your custom license"
+            />
+          ) : (
+            <p>{licenseDescription || 'Please select a licence to see its description.'}</p>
+          )}
         </div>
       </div>
       <div className="row">
@@ -61,7 +79,7 @@ function LicensingOptions({ updateData }) {
           </select>
         </div>
         <div className="column">
-          <label>Are the data sensitive or derived from autochthonous population?</label>
+          <label>Are the data sensitive or derived from or collected with an autochthonous population?</label>
           <select value={sensitiveData} onChange={(e) => setSensitiveData(e.target.value)}>
             <option value="">--Select--</option>
             <option value="yes">Yes</option>

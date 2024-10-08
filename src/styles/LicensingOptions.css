@@ -1,5 +1,8 @@
 .licensing-options {
     margin-top: 20px;
+    padding: 20px;
+    width: 100%; /* Ensures it takes up 100% width */
+    box-sizing: border-box; /* Prevents padding from affecting the width */
     text-align: left;
   }
   
@@ -45,5 +48,24 @@
     background-color: #f9f9f9;
     border: 1px solid #ccc;
     border-radius: 4px;
+  }
+  
+  .custom-license {
+    margin-top: 15px;
+  }
+  
+  .custom-license textarea {
+    width: 100%;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    resize: vertical;
+  }
+  
+  .custom-license textarea:focus {
+    border-color: #007bff;
+    outline: none;
   }
   
