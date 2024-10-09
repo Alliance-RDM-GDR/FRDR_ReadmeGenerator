@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'; 
 import '../../styles/FileOverview.css';
 
 function FileOverview({ updateData }) {
+  const [folderNamingConvention, setFolderNamingConvention] = useState(''); // New field
   const [fileOverviewFields, setFileOverviewFields] = useState([{ itemType: '', name: '', description: '' }]);
   const [relationshipBetweenFiles, setRelationshipBetweenFiles] = useState('');
   const [additionalRelatedData, setAdditionalRelatedData] = useState('');
@@ -9,11 +10,12 @@ function FileOverview({ updateData }) {
   // Update form data when fields change
   useEffect(() => {
     updateData({
+      folderNamingConvention, // Include the new field in the form data
       fileOverviewFields,
       relationshipBetweenFiles,
       additionalRelatedData
     });
-  }, [fileOverviewFields, relationshipBetweenFiles, additionalRelatedData, updateData]);
+  }, [folderNamingConvention, fileOverviewFields, relationshipBetweenFiles, additionalRelatedData, updateData]);
 
   // Add new file overview field
   const addFileOverviewField = () => {
@@ -38,6 +40,18 @@ function FileOverview({ updateData }) {
     <div className="file-overview">
       <h2>File Overview</h2>
       <hr />
+
+      {/* New field for Folder/files naming convention */}
+      <div className="field">
+        <label>Folder/files naming convention:</label>
+        <textarea
+          rows="3"
+          placeholder="Describe the folder/files naming convention"
+          value={folderNamingConvention}
+          onChange={(e) => setFolderNamingConvention(e.target.value)}
+        />
+      </div>
+
       {fileOverviewFields.map((field, index) => (
         <div key={index} className="file-overview-field">
           <div className="field-row">

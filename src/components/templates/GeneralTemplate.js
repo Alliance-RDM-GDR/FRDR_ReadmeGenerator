@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'; 
 import DatasetIdentification from '../sections/DatasetIdentification';
+import FunderInformation from '../sections/FunderInformation';
 import AuthorInformation from '../sections/AuthorInformation';
 import LicensingOptions from '../sections/LicensingOptions';
 import MethodologicalDetails from '../sections/MethodologicalDetails';
@@ -7,6 +8,7 @@ import FileOverview from '../sections/FileOverview';
 
 function GeneralTemplate({ updateFormData }) {
   const [datasetIdentificationData, setDatasetIdentificationData] = useState({});
+  const [funderInformationData, setFunderInformationData] = useState({});
   const [authorInformationData, setAuthorInformationData] = useState({});
   const [licensingOptionsData, setLicensingOptionsData] = useState({});
   const [methodologicalDetailsData, setMethodologicalDetailsData] = useState({});
@@ -16,6 +18,10 @@ function GeneralTemplate({ updateFormData }) {
   useEffect(() => {
     updateFormData('Dataset Identification', datasetIdentificationData);
   }, [datasetIdentificationData, updateFormData]);
+
+  useEffect(() => {
+    updateFormData('Funder Information', funderInformationData);
+  }, [funderInformationData, updateFormData]);
 
   useEffect(() => {
     updateFormData('Author Information', authorInformationData);
@@ -36,6 +42,7 @@ function GeneralTemplate({ updateFormData }) {
   return (
     <div>
       <DatasetIdentification updateData={setDatasetIdentificationData} />
+      <FunderInformation updateData={setFunderInformationData} />
       <AuthorInformation updateData={setAuthorInformationData} />
       <LicensingOptions updateData={setLicensingOptionsData} />
       <MethodologicalDetails updateData={setMethodologicalDetailsData} />

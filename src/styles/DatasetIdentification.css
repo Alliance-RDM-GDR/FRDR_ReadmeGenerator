@@ -60,3 +60,40 @@
     border-radius: 4px;
     box-sizing: border-box;
 }
+
+.dataset-identification-container {
+    padding: 20px;
+    background-color: #fff;
+  }
+  
+  .section-title h3 {
+    font-size: 20px;
+    margin-bottom: 20px;
+    margin-top: 30px;
+  }
+  
+  .geo-group {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+  
+  .geo-column {
+    width: 48%; /* Adjust width to fit two columns */
+  }
+  
+  .text-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  textarea.textarea-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
