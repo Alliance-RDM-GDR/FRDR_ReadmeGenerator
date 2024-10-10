@@ -35,7 +35,7 @@ function FunderInformation({ updateData }) {
       {funders.map((funder, index) => (
         <div key={index} className="funder-row">
           <div className="funder-column">
-            <label>Funder:</label>
+            <label>Funding agency</label>
             <input
               type="text"
               value={funder.funder}
@@ -44,16 +44,16 @@ function FunderInformation({ updateData }) {
           </div>
 
           <div className="funder-column">
-            <label>Award Number:</label>
+            <label>Award Number/id</label>
             <input
-              type="text"
+              type="text"              
               value={funder.awardNumber}
               onChange={(e) => handleFunderChange(index, 'awardNumber', e.target.value)}
             />
           </div>
 
           <div className="funder-column">
-            <label>Award Title:</label>
+            <label>Award Title</label>
             <input
               type="text"
               value={funder.awardTitle}
@@ -62,7 +62,7 @@ function FunderInformation({ updateData }) {
           </div>
 
           <div className="funder-column">
-            <label>Year:</label>
+            <label>Year</label>
             <input
               type="text"
               value={funder.year}

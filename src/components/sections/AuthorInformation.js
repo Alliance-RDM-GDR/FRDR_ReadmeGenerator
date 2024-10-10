@@ -37,19 +37,21 @@ function AuthorInformation({ updateData }) {
       {authors.map((author, index) => (
         <div key={index} className="author-field">
           <div className="field">
-            <label>Name (Given name and family name):</label>
+            <label>Name</label>
             <input
               type="text"
               className="text-input"
+              placeholder="Given name and family name"
               value={author.name}
               onChange={(e) => handleInputChange(index, 'name', e.target.value)}
             />
           </div>
           <div className="field">
-            <label>Institution:</label>
+            <label>Institution</label>
             <input
               type="text"
               className="text-input"
+              placeholder="Name of the university or research center"
               value={author.institution}
               onChange={(e) => handleInputChange(index, 'institution', e.target.value)}
             />
@@ -59,15 +61,17 @@ function AuthorInformation({ updateData }) {
             <input
               type="email"
               className="text-input"
+              placeholder="Contact email (Institutional preferred)"
               value={author.email}
               onChange={(e) => handleInputChange(index, 'email', e.target.value)}
             />
           </div>
           <div className="field">
-            <label>ORCID ID:</label>
+            <label>ORCID ID</label>
             <input
               type="text"
               className="text-input"
+              placeholder="ORCID full adress e.g https://orcid.org/0000-0002-1912-1764"
               value={author.orcid}
               onChange={(e) => handleInputChange(index, 'orcid', e.target.value)}
             />

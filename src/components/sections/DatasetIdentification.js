@@ -38,6 +38,7 @@ function DatasetIdentification({ updateData }) {
         <input
           type="text"
           className="text-input"
+          placeholder="Provide a descriptive title for your dataset"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
@@ -46,6 +47,7 @@ function DatasetIdentification({ updateData }) {
         <label>Description</label>
         <textarea
           className="textarea-input"
+          placeholder="Briefely describe the context, content and methods used to garther the data"
           rows="4"
           value={description}
           onChange={(e) => setDescription(e.target.value)}

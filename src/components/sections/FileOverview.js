@@ -78,7 +78,7 @@ function FileOverview({ updateData }) {
             <div className="field-column">
               <label>Description:</label>
               <textarea
-                placeholder="Please provide a brief description of the item."
+                placeholder="Provide a brief description of the item."
                 value={field.description}
                 onChange={(e) => handleInputChange(index, 'description', e.target.value)}
               />
@@ -96,6 +96,7 @@ function FileOverview({ updateData }) {
         <label>Relationship between files</label>
         <textarea
           rows="4"
+          placeholder="Describe relevant relatinships between files that help to undestand the structure of the dataset."
           value={relationshipBetweenFiles}
           onChange={(e) => setRelationshipBetweenFiles(e.target.value)}
         />
@@ -105,6 +106,7 @@ function FileOverview({ updateData }) {
         <label>Additional related data</label>
         <textarea
           rows="4"
+          placeholder="Describe additional related data collected that was not included in the current dataset."
           value={additionalRelatedData}
           onChange={(e) => setAdditionalRelatedData(e.target.value)}
         />

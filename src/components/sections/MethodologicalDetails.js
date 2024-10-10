@@ -96,6 +96,7 @@ function MethodologicalDetails({ updateData }) {
         <label>Methods for data collection</label>
         <textarea
           rows="4"
+          placeholder="Please consider including a brief description of the methods you used to collect or generate your data. You may also include links to publications or other documentation that contain experimental design or protocols used in data collection."
           value={methodsForDataCollection}
           onChange={(e) => setMethodsForDataCollection(e.target.value)}
         />
@@ -105,7 +106,7 @@ function MethodologicalDetails({ updateData }) {
           collectionSoftwareFields.map((field, index) => (
             <div key={index} className="software-fields">
               <div className="software-field">
-                <label>Software/instrument:</label>
+                <label>Software/instrument</label>
                 <input
                   type="text"
                   value={field.software}
@@ -113,7 +114,7 @@ function MethodologicalDetails({ updateData }) {
                 />
               </div>
               <div className="software-field">
-                <label>Version:</label>
+                <label>Version</label>
                 <input
                   type="text"
                   value={field.version}
@@ -121,7 +122,7 @@ function MethodologicalDetails({ updateData }) {
                 />
               </div>
               <div className="software-field">
-                <label>Purpose:</label>
+                <label>Purpose</label>
                 <input
                   type="text"
                   value={field.purpose}
@@ -142,6 +143,7 @@ function MethodologicalDetails({ updateData }) {
         <label>Methods for processing the data</label>
         <textarea
           rows="4"
+          placeholder="Describe how the submitted data were generated from the raw or collected data"
           value={methodsForDataProcessing}
           onChange={(e) => setMethodsForDataProcessing(e.target.value)}
         />
@@ -151,7 +153,7 @@ function MethodologicalDetails({ updateData }) {
           processingSoftwareFields.map((field, index) => (
             <div key={index} className="software-fields">
               <div className="software-field">
-                <label>Software:</label>
+                <label>Software</label>
                 <input
                   type="text"
                   value={field.software}
@@ -159,7 +161,7 @@ function MethodologicalDetails({ updateData }) {
                 />
               </div>
               <div className="software-field">
-                <label>Version:</label>
+                <label>Version</label>
                 <input
                   type="text"
                   value={field.version}
@@ -167,7 +169,7 @@ function MethodologicalDetails({ updateData }) {
                 />
               </div>
               <div className="software-field">
-                <label>Purpose:</label>
+                <label>Purpose</label>
                 <input
                   type="text"
                   value={field.purpose}
@@ -188,6 +190,7 @@ function MethodologicalDetails({ updateData }) {
         <label>Environmental/experimental conditions</label>
         <textarea
           rows="4"
+          placeholder="Provide relevant information or context to help understand the conditions under which the data was collected"
           value={environmentalConditions}
           onChange={(e) => setEnvironmentalConditions(e.target.value)}
         />

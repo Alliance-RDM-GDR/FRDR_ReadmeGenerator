@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'; 
 import '../../styles/LicensingOptions.css';
 
 function LicensingOptions({ updateData }) {
@@ -6,6 +6,7 @@ function LicensingOptions({ updateData }) {
   const [licenseDescription, setLicenseDescription] = useState('');
   const [customLicenseDescription, setCustomLicenseDescription] = useState('');
   const [derivedFromSource, setDerivedFromSource] = useState('');
+  const [attributionInfo, setAttributionInfo] = useState(''); // New state for attribution info
   const [sensitiveData, setSensitiveData] = useState('');
 
   const licenses = [
@@ -36,13 +37,14 @@ function LicensingOptions({ updateData }) {
       selectedLicense: selectedLicense === 'other' ? customLicenseDescription : licenses.find(license => license.value === selectedLicense)?.label,
       licenseDescription: selectedLicense === 'other' ? customLicenseDescription : licenseDescription,
       derivedFromSource,
+      attributionInfo, // Include attribution info in the update
       sensitiveData,
     });
-  }, [selectedLicense, licenseDescription, customLicenseDescription, derivedFromSource, sensitiveData, updateData]);
+  }, [selectedLicense, licenseDescription, customLicenseDescription, derivedFromSource, attributionInfo, sensitiveData, updateData]);
 
   return (
     <div className="licensing-options">
-      <h2>Licensing Options</h2>
+      <h2>Access/sharing information</h2>
       <hr />
       <div className="row">
         <div className="column">
@@ -77,7 +79,21 @@ function LicensingOptions({ updateData }) {
             <option value="yes">Yes</option>
             <option value="no">No</option>
           </select>
+
+          {/* Conditionally render attribution information input below the dropdown */}
+          {derivedFromSource === 'yes' && (
+            <div>
+              <label>Attribution information of previous source:</label>
+              <textarea
+                value={attributionInfo}
+                onChange={(e) => setAttributionInfo(e.target.value)}
+                placeholder="Provide attribution information, e.g citation or DOI"
+                rows="4"
+              />
+            </div>
+          )}
         </div>
+
         <div className="column">
           <label>Are the data sensitive or derived from or collected with an autochthonous population?</label>
           <select value={sensitiveData} onChange={(e) => setSensitiveData(e.target.value)}>
