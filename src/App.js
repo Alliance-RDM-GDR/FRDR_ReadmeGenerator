@@ -50,7 +50,7 @@ function App() {
 
   // Export Plain Text file
   const exportPlainTextReadme = () => {
-    const readmeContent = generatePlainTextReadmeContent(formData); // Call the external function
+    const readmeContent = generatePlainTextReadmeContent(formData, selectedTemplate); // Pass the selectedTemplate
     const blob = new Blob([readmeContent], { type: 'text/plain' });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import DatasetIdentification from '../sections/DatasetIdentification';
 import AuthorInformation from '../sections/AuthorInformation';
+import FunderInformation from '../sections/FunderInformation';
 import LicensingOptions from '../sections/LicensingOptions';
 import MethodologicalDetails from '../sections/MethodologicalDetails';
 import FileOverview from '../sections/FileOverview';
@@ -8,6 +9,7 @@ import GenomicStandards from '../sections/GenomicStandards'; // Import Genomic S
 
 function SequencingGenomicTemplate({ updateFormData }) {
   const [datasetIdentificationData, setDatasetIdentificationData] = useState({});
+  const [funderInformationData, setFunderInformationData] = useState({});
   const [authorInformationData, setAuthorInformationData] = useState({});
   const [licensingOptionsData, setLicensingOptionsData] = useState({});
   const [methodologicalDetailsData, setMethodologicalDetailsData] = useState({});
@@ -18,6 +20,10 @@ function SequencingGenomicTemplate({ updateFormData }) {
   useEffect(() => {
     updateFormData('Dataset Identification', datasetIdentificationData);
   }, [datasetIdentificationData, updateFormData]);
+
+  useEffect(() => {
+    updateFormData('Funder Information', funderInformationData);
+  }, [funderInformationData, updateFormData]);
 
   useEffect(() => {
     updateFormData('Author Information', authorInformationData);
@@ -42,6 +48,7 @@ function SequencingGenomicTemplate({ updateFormData }) {
   return (
     <div>
       <DatasetIdentification updateData={setDatasetIdentificationData} />
+      <FunderInformation updateData={setFunderInformationData} />
       <AuthorInformation updateData={setAuthorInformationData} />
       <LicensingOptions updateData={setLicensingOptionsData} />
       <MethodologicalDetails updateData={setMethodologicalDetailsData} />

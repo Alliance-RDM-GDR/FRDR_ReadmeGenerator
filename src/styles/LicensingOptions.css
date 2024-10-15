@@ -70,3 +70,20 @@
     outline: none;
   }
   
+  .full-width {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .full-width-column {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  
+  .publication-textarea {
+    width: 100%;
+    resize: vertical;
+  }
+  
+  

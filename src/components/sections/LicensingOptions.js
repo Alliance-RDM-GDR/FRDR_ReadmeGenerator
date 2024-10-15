@@ -8,6 +8,7 @@ function LicensingOptions({ updateData }) {
   const [derivedFromSource, setDerivedFromSource] = useState('');
   const [attributionInfo, setAttributionInfo] = useState(''); // New state for attribution info
   const [sensitiveData, setSensitiveData] = useState('');
+  const [publicationLinks, setPublicationLinks] = useState(['']); // State for dynamic publication links
 
   const licenses = [
     { value: 'cc0', label: 'CC0 1.0', description: 'This license allows the work to be freely available in the public domain (https://creativecommons.org/publicdomain/zero/1.0/)' },
@@ -31,6 +32,25 @@ function LicensingOptions({ updateData }) {
     }
   };
 
+  // Handle adding a new publication link input
+  const addPublicationLink = () => {
+    setPublicationLinks([...publicationLinks, '']);
+  };
+
+  // Handle removing the last publication link input
+  const removePublicationLink = () => {
+    if (publicationLinks.length > 1) {
+      setPublicationLinks(publicationLinks.slice(0, -1));
+    }
+  };
+
+  // Handle publication link changes
+  const handlePublicationLinkChange = (index, value) => {
+    const updatedLinks = [...publicationLinks];
+    updatedLinks[index] = value;
+    setPublicationLinks(updatedLinks);
+  };
+
   // Update the parent component whenever data changes
   useEffect(() => {
     updateData({
@@ -39,8 +59,9 @@ function LicensingOptions({ updateData }) {
       derivedFromSource,
       attributionInfo, // Include attribution info in the update
       sensitiveData,
+      publicationLinks, // Include publication links in the update
     });
-  }, [selectedLicense, licenseDescription, customLicenseDescription, derivedFromSource, attributionInfo, sensitiveData, updateData]);
+  }, [selectedLicense, licenseDescription, customLicenseDescription, derivedFromSource, attributionInfo, sensitiveData, publicationLinks, updateData]);
 
   return (
     <div className="licensing-options">
@@ -71,6 +92,7 @@ function LicensingOptions({ updateData }) {
           )}
         </div>
       </div>
+
       <div className="row">
         <div className="column">
           <label>Was data derived from another source?</label>
@@ -101,6 +123,28 @@ function LicensingOptions({ updateData }) {
             <option value="yes">Yes</option>
             <option value="no">No</option>
           </select>
+        </div>
+      </div>
+
+      {/* New row for "Links to publications that cite or use the data" spanning full width */}
+      <div className="row full-width">
+        <label>Links to publications that cite or use the data:</label>
+        {publicationLinks.map((link, index) => (
+          <div key={index} className="full-width-column">
+            <textarea
+              value={link}
+              onChange={(e) => handlePublicationLinkChange(index, e.target.value)}
+              placeholder="Provide links to related publications"
+              rows="1"
+              className="publication-textarea"
+            />
+          </div>
+        ))}
+
+        {/* Add/Remove buttons for publications */}
+        <div className="button-group">
+          <button onClick={addPublicationLink}>Add another publication</button>
+          <button onClick={removePublicationLink}>Remove last</button>
         </div>
       </div>
     </div>

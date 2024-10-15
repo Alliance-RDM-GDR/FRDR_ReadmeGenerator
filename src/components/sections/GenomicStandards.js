@@ -3,22 +3,15 @@ import '../../styles/GenomicStandards.css';
 
 function GenomicStandards({ updateData }) {
   const [fields, setFields] = useState({
-    samp_name: '',
-    pcr_primers: '',
-    nucl_acid_amp: '',
-    seq_meth: '',
-    seq_platform_version: '', // New field for sequencing platform version
-    target_subfragment: '',
+    samp_type: '',
     temp: '',
-    pcr_cond: '',
-    nucl_acid_ext: '',
-    read_count: '', // New field for Read Count/Sequence Depth
-    assembly_version: '', // New field for Assembly/Annotation Version
+    target_gene: '',
+    pcr_primers: '',
+    seq_meth: '',
+    pcr_cond: '',  
+    nucl_acid_amp: '',
     chimera_check: '',
-    seq_quality_check: '',
-    rel_to_oxygen: '',
-    biotic_relationship: '',
-    metadata_completeness: '', // New field for metadata standard compliance
+    seq_quality_check: '',    
   });
 
   useEffect(() => {
@@ -37,53 +30,83 @@ function GenomicStandards({ updateData }) {
       <h2>Genomic Standards (MIMARKS-C)</h2>
       <hr />
       <div className="field">
-        <label>Sample Name:</label>
-        <input type="text" value={fields.samp_name} onChange={(e) => handleInputChange('samp_name', e.target.value)} />
+        <label>Sample type</label>
+        <input 
+        type="text" 
+        placeholder="Describe the sample/organ (e.g. lung, brain, kidney, boold cells)."
+        value={fields.samp_type} 
+        onChange={(e) => handleInputChange('samp_type', e.target.value)} />
       </div>
       <div className="field">
-        <label>PCR Primers:</label>
-        <input type="text" value={fields.pcr_primers} onChange={(e) => handleInputChange('pcr_primers', e.target.value)} />
+        <label>Temperature (C)</label>
+        <input 
+        type="number" 
+        placeholder="Temperature of the sample at the time of sampling"
+        value={fields.temp} 
+        onChange={(e) => handleInputChange('temp', e.target.value)} />
       </div>
       <div className="field">
-        <label>Target Gene/Fragment:</label>
-        <input type="text" value={fields.target_subfragment} onChange={(e) => handleInputChange('target_subfragment', e.target.value)} />
+        <label>Target gene/fragment</label>
+        <input 
+        type="text" 
+        placeholder="Identify the target gene."
+        value={fields.target_gene} 
+        onChange={(e) => handleInputChange('target_gene', e.target.value)} />
       </div>
       <div className="field">
-        <label>Sequencing Method:</label>
-        <input type="text" value={fields.seq_meth} onChange={(e) => handleInputChange('seq_meth', e.target.value)} />
+        <label>PCR primers</label>
+        <textarea
+        type="textarea-input"
+        rows="4" 
+        placeholder="(uppercase letters) forward or reverse primers PCR primers used to amplify the sequence."
+        value={fields.pcr_primers} 
+        onChange={(e) => handleInputChange('pcr_primers', e.target.value)} />
       </div>
       <div className="field">
-        <label>Sequencing Platform Version:</label> {/* New Field */}
-        <input type="text" value={fields.seq_platform_version} onChange={(e) => handleInputChange('seq_platform_version', e.target.value)} />
+        <label>Sequencing method</label>
+        <textarea
+        type="textarea-input"
+        rows="4"
+        placeholder="Indicate the sequencing machine used and its version. When possible use the terms specified in http://purl.obolibrary.org/obo/OBI_0400103"
+        value={fields.seq_meth} 
+        onChange={(e) => handleInputChange('seq_meth', e.target.value)} />
+      </div>      
+      <div className="field">
+        <label>PCR conditions</label>
+        <textarea
+        type="textarea-input"
+        rows="4"
+        placeholder="Describe the reaction conditions and components of PCR performed during library preparation"
+        value={fields.pcr_cond} 
+        onChange={(e) => handleInputChange('pcr_cond', e.target.value)} />
       </div>
       <div className="field">
-        <label>Read Count/Sequence Depth:</label> {/* New Field */}
-        <input type="number" value={fields.read_count} onChange={(e) => handleInputChange('read_count', e.target.value)} />
+        <label>Nucleic acid amplification method</label>
+        <textarea
+        type="textarea-input"
+        rows="2" 
+        placeholder="Provide a reference or a standard operating procedure (SOP) describing the enzymatic amplification (PCR, TMA, NASBA) of specific nucleic acids."
+        value={fields.nucl_acid_amp} 
+        onChange={(e) => handleInputChange('nucl_acid_amp', e.target.value)} />
       </div>
       <div className="field">
-        <label>PCR Conditions:</label>
-        <input type="text" value={fields.pcr_cond} onChange={(e) => handleInputChange('pcr_cond', e.target.value)} />
+        <label>Chimera checking tool</label>
+        <textarea
+        type="textarea-input"
+        rows="4" 
+        placeholder="Tool used for chimera checking, including version number and parameters, to discover and remove chimeric sequences."
+        value={fields.chimera_check} 
+        onChange={(e) => handleInputChange('chimera_check', e.target.value)} />
       </div>
       <div className="field">
-        <label>Nucleic Acid Amplification Method:</label>
-        <input type="text" value={fields.nucl_acid_amp} onChange={(e) => handleInputChange('nucl_acid_amp', e.target.value)} />
-      </div>
-      <div className="field">
-        <label>Nucleic Acid Extraction Method:</label>
-        <input type="text" value={fields.nucl_acid_ext} onChange={(e) => handleInputChange('nucl_acid_ext', e.target.value)} />
-      </div>
-      <div className="field">
-        <label>Chimera Checking Tool:</label>
-        <input type="text" value={fields.chimera_check} onChange={(e) => handleInputChange('chimera_check', e.target.value)} />
-      </div>
-      <div className="field">
-        <label>Sequence Quality Check:</label>
-        <input type="text" value={fields.seq_quality_check} onChange={(e) => handleInputChange('seq_quality_check', e.target.value)} />
-      </div>
-      <div className="field">
-        <label>Environmental Temperature (C):</label>
-        <input type="number" value={fields.temp} onChange={(e) => handleInputChange('temp', e.target.value)} />
-      </div>
+        <label>Sequence quality check</label>
+        <textarea
+        type="textarea-input"
+        rows="4"
+        placeholder="Indicate processes for quality check or if the data has undergone a manual editings (e.g. by inspecting the raw data or chromatograms). Applies only for sequences that are not submitted to SRA,ENA or DRA"
+        value={fields.seq_quality_check} 
+        onChange={(e) => handleInputChange('seq_quality_check', e.target.value)} />
+      </div>      
      
     </div>
   );
