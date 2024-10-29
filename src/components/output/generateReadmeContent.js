@@ -178,6 +178,51 @@ export const generatePlainTextReadmeContent = (formData) => {
       readmeContent += `Sequence quality check: ${formData[section]?.seq_quality_check || 'N/A'}\n`;
     }
 
+    // Handle Geographic Information section
+    else if (section === 'Geographic Information') {
+      
+      // Geographic Coverage
+      readmeContent += `Geographic Coverage:\n`;
+      readmeContent += `  Place Name: ${formData[section]?.placeName || 'N/A'}\n`;
+      readmeContent += `  Country: ${formData[section]?.country || 'N/A'}\n`;
+      readmeContent += `  Province/Territory/State: ${formData[section]?.province || 'N/A'}\n`;
+      readmeContent += `  City: ${formData[section]?.city || 'N/A'}\n`;
+      readmeContent += `  Latitude: ${formData[section]?.latitude || 'N/A'}\n`;
+      readmeContent += `  Longitude: ${formData[section]?.longitude || 'N/A'}\n`;
+      readmeContent += `  Geographic Bounding Box:\n`;
+      readmeContent += `    West Longitude: ${formData[section]?.westLongitude || 'N/A'}\n`;
+      readmeContent += `    East Longitude: ${formData[section]?.eastLongitude || 'N/A'}\n`;
+      readmeContent += `    North Latitude: ${formData[section]?.northLatitude || 'N/A'}\n`;
+      readmeContent += `    South Latitude: ${formData[section]?.southLatitude || 'N/A'}\n\n`;
+
+      // Spatial Resolution
+      readmeContent += `Spatial Resolution:\n`;
+      readmeContent += `  Granularity: ${formData[section]?.granularity || 'N/A'}\n`;
+      readmeContent += `  Area Size (km²): ${formData[section]?.areaSize || 'N/A'}\n\n`;
+
+      // Satellite Information
+      readmeContent += `Satellite Information:\n`;
+      readmeContent += `  Satellite Name: ${formData[section]?.satelliteName || 'N/A'}\n`;
+      readmeContent += `  Sensor Name: ${formData[section]?.sensorName || 'N/A'}\n`;
+      readmeContent += `  Orbit Type: ${formData[section]?.orbitType || 'N/A'}\n`;
+      readmeContent += `  Spectral Bands Used: ${formData[section]?.spectralBands || 'N/A'}\n\n`;
+
+      // Geospatial Data Formats
+      readmeContent += `Geospatial Data Formats:\n`;
+      readmeContent += `  Supported File Formats: ${formData[section]?.fileFormats || 'N/A'}\n`;
+      readmeContent += `  Coordinate Reference System (CRS): ${formData[section]?.crs || 'N/A'}\n`;
+      readmeContent += `  Spatial Accuracy: ${formData[section]?.spatialAccuracy || 'N/A'}\n`;
+      readmeContent += `  Geospatial Metadata Standards: ${formData[section]?.metadataStandards || 'N/A'}\n\n`;
+
+      // Geospatial Data Processing Information
+      readmeContent += `Geospatial Data Processing Information:\n`;
+      readmeContent += `  Software Used: ${formData[section]?.softwareUsed || 'N/A'}\n`;
+      readmeContent += `  Processing Workflow: ${formData[section]?.processingWorkflow || 'N/A'}\n`;
+      readmeContent += `  Quality Assurance/Quality Control (QA/QC): ${formData[section]?.qualityControl || 'N/A'}\n`;
+      readmeContent += `  Data Normalization/Correction: ${formData[section]?.dataCorrection || 'N/A'}\n`;
+      readmeContent += `  Derived Metrics: ${formData[section]?.derivedMetrics || 'N/A'}\n\n`;
+    }
+
     // Catch-all section to ensure it doesn't duplicate Dataset Identification
     else if (section !== 'Dataset Identification' && section !== 'Funder Information') {
       Object.keys(formData[section]).forEach((field) => {

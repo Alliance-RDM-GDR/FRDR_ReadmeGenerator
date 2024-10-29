@@ -1,0 +1,104 @@
+.geographic-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 1px;
+}
+
+.geographic-information {
+    margin-bottom: 20px;
+    padding: 20px;
+    max-width: 900px;
+    width: 100%;
+}
+
+.geographic-information h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 30px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.geographic-information h3 {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 40px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.geographic-information hr {
+    border: 1px solid gray;
+    margin-bottom: 20px;
+}
+
+/* Bounding Box Container */
+.geographic-bounding-box {
+    margin-top: 10px;
+    padding: 15px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+}
+
+.geographic-bounding-box h4 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.field {
+    margin-bottom: 5px;
+}
+
+.field-group {
+    margin-bottom: 1px;
+}
+
+.field label {
+    display: block;
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.field input[type="text"],
+.field input[type="number"],
+.field textarea {
+    width: 100%;
+    padding: 5px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.field input:focus,
+.field textarea:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Flex layout for Bounding Box rows */
+.geographic-bounding-box .field {
+    display: flex;
+    justify-content: space-between;
+}
+
+.geographic-bounding-box .field-group {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.geographic-bounding-box .field-group:last-child {
+    margin-right: 0;
+}
+
+@media (max-width: 768px) {
+    .geographic-grid {
+        grid-template-columns: 1fr;
+    }
+}

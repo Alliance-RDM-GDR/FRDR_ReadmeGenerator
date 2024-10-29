@@ -81,7 +81,7 @@ function AuthorInformation({ updateData }) {
 
       <div className="button-group">
         <button onClick={addAuthor}>Add another author</button>
-        <button onClick={removeLastAuthor}>Remove last author</button>
+        <button onClick={removeLastAuthor}>Remove last</button>
       </div>
     </div>
   );

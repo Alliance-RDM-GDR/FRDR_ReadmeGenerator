@@ -72,8 +72,8 @@ function FunderInformation({ updateData }) {
         </div>
       ))}
       <div className="button-group">
-        <button onClick={addFunder}>Add Another Funder</button>
-        <button onClick={removeLastFunder}>Remove Last Funder</button>
+        <button onClick={addFunder}>Add another funder</button>
+        <button onClick={removeLastFunder}>Remove last</button>
       </div>
     </div>
   );

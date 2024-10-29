@@ -3,6 +3,7 @@ import './styles/App.css';
 import GeneralTemplate from './components/templates/GeneralTemplate';
 import LifeSciencesTemplate from './components/templates/LifeSciencesTemplate';
 import SequencingGenomicTemplate from './components/templates/SequencingGenomicTemplate';
+import GeographicTemplate from './components/templates/GeographicTemplate'; // Import the new template
 import logo from './logo.png';
 
 // Import the generateReadmeContent function from the output folder
@@ -24,6 +25,11 @@ const templates = [
     name: 'Sequencing-Genomic Template',
     value: 'sequencing_genomic',
     description: 'The Sequencing-Genomic Template is specific to genomic studies and includes MiMARKS standards for sequencing (https://www.gensc.org/pages/standards-intro.html).',
+  },
+  {
+    name: 'Satellite/aerial data template', // New template added
+    value: 'geographic',
+    description: 'The Satellite/aerial data template is suited for datasets involving geographic information, satellite data, or climate-related data. It includes sections like geographic coverage, spatial resolution, and satellite information.',
   },
 ];
 
@@ -80,6 +86,7 @@ function App() {
           </p>
           <p>
             Please be aware that you cannot save the work. Populate the form and export as plain text.
+            For inquiries and suggestions to improve this application, please contact XXXX.
           </p>
         </div>
 
@@ -112,6 +119,9 @@ function App() {
           )}
           {selectedTemplate === 'sequencing_genomic' && (
             <SequencingGenomicTemplate updateFormData={updateFormData} />
+          )}
+          {selectedTemplate === 'geographic' && (  // New case for geographic template
+            <GeographicTemplate updateFormData={updateFormData} />
           )}
         </div>
 
