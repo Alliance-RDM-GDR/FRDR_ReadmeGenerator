@@ -86,7 +86,7 @@ function App() {
           </p>
           <p>
             Please be aware that you cannot save the work. Populate the form and export as plain text.
-            For inquiries and suggestions to improve this application, please contact XXXX.
+            For inquiries and suggestions to improve this application, please contact curators@frdr-dfdr.ca.
           </p>
         </div>
 
