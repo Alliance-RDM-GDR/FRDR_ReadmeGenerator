@@ -168,7 +168,7 @@ export const generatePlainTextReadmeContent = (formData) => {
     // Handle Genomic Standards section (Specific to MIMARKS)
     else if (section === 'Genomic Standards') {
       readmeContent += `Sample type: ${formData[section]?.samp_type || 'N/A'}\n`;
-      readmeContent += `Temperatuce (C): ${formData[section]?.temp || 'N/A'}\n`;
+      readmeContent += `Temperature (C): ${formData[section]?.temp || 'N/A'}\n`;
       readmeContent += `Target Gene: ${formData[section]?.target_gene || 'N/A'}\n`;
       readmeContent += `PCR Primers: ${formData[section]?.pcr_primers || 'N/A'}\n`;
       readmeContent += `Sequencing Method: ${formData[section]?.seq_meth || 'N/A'}\n`;
